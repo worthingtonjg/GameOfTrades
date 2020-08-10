@@ -19,16 +19,19 @@ public class Spin : MonoBehaviour
     public GameObject spinCanvas;
     public GameObject chooseNextPanel;
     public GameObject clickForGold;
+    public GameObject chest;
     public GameObject turnProgress;
     public TMP_Dropdown selectedVenture;
     public List<GameObject> Backgrounds;
+    public float minRotationSpeed = 3f;
+    public float maxRotationSpeed = 10f;
 
     private bool canSpin = true;
     private bool spinAgain = false;
     private bool isSpinning;
-    private float rotationSpeed = 1;
     private float startTime;
     private EnumSpinValues? result;
+    private float rotationSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -44,7 +47,9 @@ public class Spin : MonoBehaviour
         if(isSpinning)
         {
             var percentComplete = (Time.time - startTime) / spinClip.length;
+            
             rect.Rotate(0 , 0, rotationSpeed - (rotationSpeed * percentComplete), Space.World);
+
             if(!audioSource.isPlaying)
             {
                 isSpinning = false;
@@ -160,6 +165,7 @@ public class Spin : MonoBehaviour
         Backgrounds[(int)GameController.SelectedRegion].SetActive(true);
         spinCanvas.SetActive(false);
         clickForGold.SetActive(true);
+        chest.SetActive(true);
         turnProgress.SetActive(true);
 
         selectedVentureText.text = GetVentureText();
@@ -174,6 +180,7 @@ public class Spin : MonoBehaviour
         result = null;
         HideBackgrounds();
         clickForGold.SetActive(false);
+        chest.SetActive(false);
         turnProgress.SetActive(false);
         chooseNextPanel.SetActive(false);
         continueButton.SetActive(false);
@@ -188,7 +195,7 @@ public class Spin : MonoBehaviour
     public void SpinWheel()
     {
         if(isSpinning || !canSpin) return;
-        rotationSpeed = Random.Range(1f, 3f);
+        rotationSpeed = Random.Range(minRotationSpeed, maxRotationSpeed) * Time.deltaTime;
         instructions.SetActive(false);
 
         startTime = Time.time;

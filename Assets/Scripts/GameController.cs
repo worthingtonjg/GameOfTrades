@@ -18,6 +18,8 @@ public class GameController : MonoBehaviour
     public static int TurnsSinceRetirePrompt = 0;
     public static int StartingTurns = 25;
 
+    public GameObject ParticlesCamera;
+    public GameObject GoldExplosionPrefab;
     public AudioSource audioSource;
     public AudioClip moneyClip;
     public AudioClip failClip;
@@ -30,7 +32,6 @@ public class GameController : MonoBehaviour
     public GameObject RetirePanel;
     public GameObject GameOverPanel;
     public GameObject SpinCanvas;
-    public GameObject SpinWheel;
     public Image CardImage;
     public List<Sprite> Images;
 
@@ -51,7 +52,7 @@ public class GameController : MonoBehaviour
         GameController.GameState = EnumGameState.SpinningWheel;
 
         Cards = Card.SetupCards();
-        spinComponent = SpinWheel.GetComponent<Spin>();
+        spinComponent = GetComponent<Spin>();
     }
 
     // Update is called once per frame
@@ -105,10 +106,18 @@ public class GameController : MonoBehaviour
     {
         if(GameState != EnumGameState.InTurn) return;
 
+        var mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        
+        audioSource.PlayOneShot(moneyClip);
+        var position = ParticlesCamera.transform.position;
+        print(position);
+        position.z = position.z+5;
+
+        var prefab = Instantiate(GoldExplosionPrefab, position, Quaternion.identity);
+        GameObject.Destroy(prefab, 3f);
+
         TotalGold += (amount * GoldMultiplier);
         UpdateGold();
-
-        audioSource.PlayOneShot(moneyClip);
     }
 
     public void NextTurn()
