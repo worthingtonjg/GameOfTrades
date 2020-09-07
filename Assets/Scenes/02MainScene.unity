@@ -744,7 +744,6 @@ GameObject:
   m_Component:
   - component: {fileID: 204877699}
   - component: {fileID: 204877698}
-  - component: {fileID: 204877697}
   m_Layer: 0
   m_Name: ParticlesCamera
   m_TagString: Untagged
@@ -752,14 +751,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &204877697
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 204877696}
-  m_Enabled: 1
 --- !u!20 &204877698
 Camera:
   m_ObjectHideFlags: 0
