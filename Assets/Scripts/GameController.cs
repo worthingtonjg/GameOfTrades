@@ -24,6 +24,7 @@ public class GameController : MonoBehaviour
     public AudioClip moneyClip;
     public AudioClip failClip;
     public AudioClip winClip;
+    public List<AudioClip> narrations;
     public TextMeshProUGUI GoldText;
     public TextMeshProUGUI DescriptionText;
     public TextMeshProUGUI RewardText;
@@ -34,13 +35,16 @@ public class GameController : MonoBehaviour
     public GameObject SpinCanvas;
     public Image CardImage;
     public List<Sprite> Images;
+    public GameObject ContinueButton;
+    public GameObject TalkingIndicator;
 
     public float turnLength = 30f;
 
     private List<Card> Cards = new List<Card>();
     private Card selectedCard = null;
-
     private Spin spinComponent;
+    private int cardIndex;
+    private bool win;
 
     // Start is called before the first frame update
     void Start()
@@ -65,7 +69,7 @@ public class GameController : MonoBehaviour
                 GameState = EnumGameState.BetweenTurns;
 
                 var cardsForRegion = Cards.Where(c => c.Region == SelectedRegion).ToList();
-                var cardIndex = Random.Range(0,cardsForRegion.Count);
+                cardIndex = Random.Range(0,cardsForRegion.Count);
                 selectedCard = cardsForRegion[cardIndex];
 
                 DescriptionText.text = selectedCard.Text;
@@ -80,24 +84,51 @@ public class GameController : MonoBehaviour
                     CardImage.sprite = image;
                 }
 
+                RewardText.transform.gameObject.SetActive(false);
+                ContinueButton.SetActive(false);
                 CardPanel.SetActive(true);
 
                 string turns = selectedCard.GetReward(GoldMultiplier, EnumRewardFormat.Turns);
                 string gold = selectedCard.GetReward(GoldMultiplier, EnumRewardFormat.Gold);
+                win = (!string.IsNullOrEmpty(turns) && turns.Contains("+")) || (!string.IsNullOrEmpty(gold) && gold.Contains("+"));
 
-                if((!string.IsNullOrEmpty(turns) && turns.Contains("+")) || (!string.IsNullOrEmpty(gold) && gold.Contains("+")))
-                {
-                    audioSource.PlayOneShot(winClip);
-                }
-                else
-                {
-                    audioSource.PlayOneShot(failClip);
-                }
-
+                StartCoroutine("PlaySounds");
             }
             else
             {
                 progress.fillAmount =  (Time.time - startTime) / turnLength;
+            }
+        }
+    }
+    public IEnumerator PlaySounds()
+    {
+        var clipName = $"clip{(int)SelectedRegion}0{cardIndex+1}";
+        print(clipName);
+
+        var clip = narrations.Where(i => i.name.Contains(clipName)).FirstOrDefault();
+        if(clip != null)
+        {
+            yield return new WaitForSeconds(1f);
+
+            audioSource.PlayOneShot(clip);
+
+            yield return new WaitForSeconds(.25f);
+
+            TalkingIndicator.SetActive(true);
+
+            yield return new WaitForSeconds(clip.length);
+
+            TalkingIndicator.SetActive(false);
+            RewardText.transform.gameObject.SetActive(true);
+            ContinueButton.SetActive(true);
+
+            if(win)
+            {
+                audioSource.PlayOneShot(winClip);
+            }
+            else
+            {
+                audioSource.PlayOneShot(failClip);
             }
         }
     }
