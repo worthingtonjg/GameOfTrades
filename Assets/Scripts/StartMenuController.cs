@@ -11,15 +11,34 @@ public class StartMenuController : MonoBehaviour
     public float waitTime = 3f;
     public int imageIndex = 0;
     public bool isFading;
+    public GameObject TalkingIndicator;
+    public AudioClip introClip;
+
+    private AudioSource source;
 
     // Start is called before the first frame update
     void Start()
     {
         HideImages();
+        TalkingIndicator.SetActive(false);
+
+        source = GetComponent<AudioSource>();
 
         imageIndex = Random.Range(0, images.Count);
         SetAlpha(images[imageIndex], 1);
         InvokeRepeating("StartFade", waitTime, waitTime);
+
+        StartCoroutine("PlayIntro");
+    }
+
+    IEnumerator PlayIntro()
+    {
+        yield return new WaitForSeconds(1f);
+        
+        TalkingIndicator.SetActive(true);
+        source.PlayOneShot(introClip);
+        yield return new WaitForSeconds(introClip.length);
+        TalkingIndicator.SetActive(false);
     }
 
     // Update is called once per frame
