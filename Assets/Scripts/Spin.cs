@@ -25,6 +25,7 @@ public class Spin : MonoBehaviour
     public List<GameObject> Backgrounds;
     public float minRotationSpeed = 3f;
     public float maxRotationSpeed = 10f;
+    public GameObject GameOverPanel;
 
     private bool canSpin = true;
     private bool spinAgain = false;
@@ -57,7 +58,7 @@ public class Spin : MonoBehaviour
                 var spinValues = System.Enum.GetNames(typeof(EnumSpinValues));
                 
                 result = (EnumSpinValues)Random.Range(0, spinValues.Length);
-
+                
                 switch(result)
                 {
                     case EnumSpinValues.IndianOcean : 
@@ -130,6 +131,13 @@ public class Spin : MonoBehaviour
                     GameController.GoldMultiplier *= 2;
                 }
             }
+
+            if(GameController.TurnsRemaining <= 0)
+            {
+                spinCanvas.SetActive(false);
+                GameOverPanel.SetActive(true);
+                return;
+            }            
             
             Reset();
         }

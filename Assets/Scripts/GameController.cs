@@ -54,6 +54,7 @@ public class GameController : MonoBehaviour
         GameController.GoldMultiplier = 1;
         GameController.TotalGold = 0;
         GameController.GameState = EnumGameState.SpinningWheel;
+        GameController.TurnsSinceRetirePrompt = 0;
 
         Cards = Card.SetupCards();
         spinComponent = GetComponent<Spin>();
@@ -198,7 +199,10 @@ public class GameController : MonoBehaviour
     
         if(TurnsRemaining <= 0)
         {
+            CardPanel.SetActive(false);
+            RetirePanel.SetActive(false);            
             GameOverPanel.SetActive(true);
+            return;
         }
 
         if(TurnsSinceRetirePrompt >= RetireEveryXTurns)
@@ -236,6 +240,13 @@ public class GameController : MonoBehaviour
         spinComponent.Reset();
         CardPanel.SetActive(false);
         RetirePanel.SetActive(false);
+
+        if(TurnsRemaining <= 0)
+        {
+            GameOverPanel.SetActive(true);
+            return;
+        }
+
         SpinCanvas.SetActive(true);
     }
 

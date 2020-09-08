@@ -2941,8 +2941,9 @@ MonoBehaviour:
   - {fileID: 2078273942}
   - {fileID: 608233376}
   - {fileID: 1566756414}
-  minRotationSpeed: 100
-  maxRotationSpeed: 900
+  minRotationSpeed: 200
+  maxRotationSpeed: 800
+  GameOverPanel: {fileID: 395935786}
 --- !u!1 &676019602
 GameObject:
   m_ObjectHideFlags: 0

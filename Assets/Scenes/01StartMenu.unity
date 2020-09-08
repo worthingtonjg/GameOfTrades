@@ -1365,6 +1365,7 @@ MonoBehaviour:
   imageIndex: 0
   isFading: 0
   TalkingIndicator: {fileID: 494495218}
+  StartGameButton: {fileID: 1069258803}
   introClip: {fileID: 8300000, guid: e696c2d3934fc79449a798de82ca40a3, type: 3}
 --- !u!82 &1894371516
 AudioSource:

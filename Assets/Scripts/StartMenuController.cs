@@ -12,6 +12,7 @@ public class StartMenuController : MonoBehaviour
     public int imageIndex = 0;
     public bool isFading;
     public GameObject TalkingIndicator;
+    public GameObject StartGameButton;
     public AudioClip introClip;
 
     private AudioSource source;
@@ -20,6 +21,7 @@ public class StartMenuController : MonoBehaviour
     void Start()
     {
         HideImages();
+        StartGameButton.SetActive(false);
         TalkingIndicator.SetActive(false);
 
         source = GetComponent<AudioSource>();
@@ -39,6 +41,7 @@ public class StartMenuController : MonoBehaviour
         source.PlayOneShot(introClip);
         yield return new WaitForSeconds(introClip.length);
         TalkingIndicator.SetActive(false);
+        StartGameButton.SetActive(true);
     }
 
     // Update is called once per frame
