@@ -54,8 +54,8 @@ public class StartMenuController : MonoBehaviour
 
             if(c1.a > 0)
             {
-                SetAlpha(images[imageIndex], c1.a-= fadeRate);
-                SetAlpha(images[nextImage()], c2.a+= fadeRate);
+                SetAlpha(images[imageIndex], c1.a-= (fadeRate * Time.deltaTime));
+                SetAlpha(images[nextImage()], c2.a+= (fadeRate * Time.deltaTime));
             }
             else
             {

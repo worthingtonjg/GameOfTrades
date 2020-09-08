@@ -1360,8 +1360,8 @@ MonoBehaviour:
   - {fileID: 1850407493}
   - {fileID: 901658542}
   - {fileID: 1066339942}
-  fadeRate: 0.001
-  waitTime: 6
+  fadeRate: 0.5
+  waitTime: 5
   imageIndex: 0
   isFading: 0
   TalkingIndicator: {fileID: 494495218}
